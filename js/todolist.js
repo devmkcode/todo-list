@@ -2,6 +2,7 @@ const container = document.querySelector('.todo-list');
 const inputValue = document.querySelector('.todo-input');
 const add = document.querySelector('.todo-button');
 
+
 if(window.localStorage.getItem("todos") == undefined){
      const todos = [];
      window.localStorage.setItem("todos", JSON.stringify(todos));
@@ -9,7 +10,6 @@ if(window.localStorage.getItem("todos") == undefined){
 
 const todosEX = window.localStorage.getItem("todos");
 const todos = JSON.parse(todosEX);
-
 
 class item{
 	constructor(name){
@@ -30,17 +30,7 @@ class item{
     	complete.innerHTML = "Done";
     	complete.addEventListener('click', () => {
       input.classList.toggle('completed');
-      
-        for (let v = 0 ; v < todos.length ; v++){
-          if(input.classList.contains('completed') && todos[v].class === "uncompleted"){
-            todos[v].class = "completed";
-            console.log(todos[0].class);
-            window.localStorage.setItem('todos', JSON.stringify(todos));
-          }else{
-            todos[v].class = "uncompletd";
-          }
-        }
-      
+      this.complete(input);   
     });
 
     	const edit = document.createElement('button');
@@ -63,25 +53,43 @@ class item{
     	container.appendChild(itemBox);
       
 
-        itemBox.appendChild(input);
-        itemBox.appendChild(edit);
-        itemBox.appendChild(complete);
-        itemBox.appendChild(remove);
+      itemBox.appendChild(input);
+      itemBox.appendChild(edit);
+      itemBox.appendChild(complete);
+      itemBox.appendChild(remove);
 
     }
 
     edit(input, name){
         if(input.disabled == true){
            input.disabled = !input.disabled;
-        }
-    	else{
-            input.disabled = !input.disabled;
-            let indexof = todos.indexOf(name);
-            todos[indexof] = input.value,
-            window.localStorage.setItem("todos", JSON.stringify(todos));
+        } else{
+            input.disabled = !input.disabled;         
+            for (var i in todos) {
+              if (todos[i].value == input.value && input.classList.contains('completed')) {
+                 todos[i].class = 'complete';
+                 window.localStorage.setItem("todos", JSON.stringify(todos));
+              }else if(todos[i].value == input.value && !input.classList.contains('completed')){
+                todos[i].class = 'uncomplete';
+                 window.localStorage.setItem("todos", JSON.stringify(todos));
+              }
+            }
+            // let indexof = todos.indexOf(name);
+            // todos[indexof] = input.value;
+            // window.localStorage.setItem("todos", JSON.stringify(todos));
         }
     }
-   
+    complete(input){
+      for (var i in todos) {
+        if (todos[i].value == input.value && input.classList.contains('completed')) {
+           todos[i].class = 'complete';
+           window.localStorage.setItem("todos", JSON.stringify(todos));
+        }else if(todos[i].value == input.value && !input.classList.contains('completed')){
+          todos[i].class = 'uncomplete';
+           window.localStorage.setItem("todos", JSON.stringify(todos));
+        }
+      }
+    }
     remove(itemBox, name){
         itemBox.parentNode.removeChild(itemBox);
         let index = todos.indexOf(name);
@@ -110,9 +118,13 @@ function check(e){
         window.localStorage.setItem("todos", JSON.stringify(todos));
 		inputValue.value = "";
 	}
+
 }
 
 
 for (let v = 0 ; v < todos.length ; v++){
     new item(todos[v].value);
+    // if(todos[v].class == "uncomplete"){
+    //   input.classList.add('complete');
+    // }
 }

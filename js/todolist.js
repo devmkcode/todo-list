@@ -16,80 +16,61 @@ class item{
 		this.createItem(name);
 	}
     createItem(name){
-    	const itemBox = document.createElement('div');
-      itemBox.classList.add('item');
+    	var itemBox = document.createElement('div');
+        itemBox.classList.add('item');
 
-    	const input = document.createElement('input');
+    	var input = document.createElement('input');
     	input.type = "text";
     	input.disabled = true;
     	input.value = name;
     	input.classList.add('item_input');
 
-      const complete = document.createElement('button');
+     const complete = document.createElement('button');
     	complete.classList.add('complete');
     	complete.innerHTML = "Done";
     	complete.addEventListener('click', () => {
-      input.classList.toggle('completed');
-      this.complete(input);   
-    });
-
-    	const edit = document.createElement('button');
-    	edit.classList.add('edit');
-    	edit.innerHTML = "Edit";
-    	edit.addEventListener('click', () => {
-        this.edit(input, name);
-        input.focus();
-        window.addEventListener('keyup', (e) => {
-          if(e.keyCode == 13){
-            edit.click();
-          }
-        })
+      input.classList.toggle('completed');  
       });
 
-    	const remove = document.createElement('button');
+    	var edit = document.createElement('button');
+    	edit.classList.add('edit');
+    	edit.innerHTML = "EDIT";
+    	edit.addEventListener('click', () => {
+          this.edit(input, name);
+          input.focus();
+          window.addEventListener('keyup', (e) => {
+          if(e.keyCode == 13){
+          edit.click();
+          }
+          })
+     });
+
+    	var remove = document.createElement('button');
     	remove.classList.add('remove');
     	remove.innerHTML = "REMOVE";
     	remove.addEventListener('click', () => this.remove(itemBox, name));
-    	container.appendChild(itemBox);
-      
 
-      itemBox.appendChild(input);
-      itemBox.appendChild(edit);
-      itemBox.appendChild(complete);
-      itemBox.appendChild(remove);
+    	container.appendChild(itemBox);
+
+        itemBox.appendChild(input);
+        itemBox.appendChild(edit);
+        itemBox.appendChild(complete);
+        itemBox.appendChild(remove);
 
     }
 
     edit(input, name){
         if(input.disabled == true){
            input.disabled = !input.disabled;
-        } else{
-            input.disabled = !input.disabled;         
-            for (var i in todos) {
-              if (todos[i].value == input.value && input.classList.contains('completed')) {
-                 todos[i].class = 'complete';
-                 window.localStorage.setItem("todos", JSON.stringify(todos));
-              }else if(todos[i].value == input.value && !input.classList.contains('completed')){
-                todos[i].class = 'uncomplete';
-                 window.localStorage.setItem("todos", JSON.stringify(todos));
-              }
-            }
-            // let indexof = todos.indexOf(name);
-            // todos[indexof] = input.value;
-            // window.localStorage.setItem("todos", JSON.stringify(todos));
+        }
+    	else{
+            input.disabled = !input.disabled;
+            let indexof = todos.indexOf(name);
+            todos[indexof] = input.value;
+            window.localStorage.setItem("todos", JSON.stringify(todos));
         }
     }
-    complete(input){
-      for (var i in todos) {
-        if (todos[i].value == input.value && input.classList.contains('completed')) {
-           todos[i].class = 'complete';
-           window.localStorage.setItem("todos", JSON.stringify(todos));
-        }else if(todos[i].value == input.value && !input.classList.contains('completed')){
-          todos[i].class = 'uncomplete';
-           window.localStorage.setItem("todos", JSON.stringify(todos));
-        }
-      }
-    }
+
     remove(itemBox, name){
         itemBox.parentNode.removeChild(itemBox);
         let index = todos.indexOf(name);
@@ -99,32 +80,18 @@ class item{
 }
 
 add.addEventListener('click', check);
-// window.addEventListener('keydown', (e) => {
-  
-// 	if(e.key == 13){
-// 		check();
-// 	}
-// })
 
 function check(e){
-  e.preventDefault();
+     e.preventDefault();
 	if(inputValue.value != ""){
-		new item(inputValue.value);
-        data = {
-          value: inputValue.value,
-          class: "uncompleted"
-        }
-        todos.push(data);
+	new item(inputValue.value);
+        todos.push(inputValue.value);
         window.localStorage.setItem("todos", JSON.stringify(todos));
 		inputValue.value = "";
 	}
-
 }
 
 
-for (let v = 0 ; v < todos.length ; v++){
-    new item(todos[v].value);
-    // if(todos[v].class == "uncomplete"){
-    //   input.classList.add('complete');
-    // }
+for (var v = 0 ; v < todos.length ; v++){
+    new item(todos[v]);
 }

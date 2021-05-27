@@ -8,14 +8,14 @@ if(window.localStorage.getItem("todos") == undefined){
      window.localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-if(window.localStorage.getItem("statusLocal") == undefined){
-    const statusLocal = [];
-    window.localStorage.setItem("statusLocal", JSON.stringify(statusLocal));
+if(window.localStorage.getItem("statusClass") == undefined){
+    const statusClass = [];
+    window.localStorage.setItem("statusClass", JSON.stringify(statusClass));
 }
 
 const todosEX = window.localStorage.getItem("todos");
 const todos = JSON.parse(todosEX);
-const statusLocal = JSON.parse(window.localStorage.getItem("statusLocal"));
+const statusClass = JSON.parse(window.localStorage.getItem("statusClass"));
 class item{
 	constructor(name){
 		this.createItem(name);
@@ -57,7 +57,7 @@ class item{
     	remove.addEventListener('click', () => this.remove(itemBox, name));
 
         let index = todos.indexOf(name);
-        if(statusLocal[index] === "completed"){
+        if(statusClass[index] === "completed"){
             input.classList.add("completed");
         }else{
             input.classList.remove("completed");
@@ -86,14 +86,14 @@ class item{
 
     complete(name, input){
         let index = todos.indexOf(name);
-        if(statusLocal[index] === "uncompleted"){
-            statusLocal[index] = 'completed';
+        if(statusClass[index] === "uncompleted"){
+            statusClass[index] = 'completed';
             input.classList.add('completed');  
-            window.localStorage.setItem("statusLocal", JSON.stringify(statusLocal));
+            window.localStorage.setItem("statusClass", JSON.stringify(statusClass));
         }else{
-            statusLocal[index] = 'uncompleted';
+            statusClass[index] = 'uncompleted';
             input.classList.remove('completed');  
-            window.localStorage.setItem("statusLocal", JSON.stringify(statusLocal));
+            window.localStorage.setItem("statusClass", JSON.stringify(statusClass));
         }
     }
 
@@ -101,9 +101,9 @@ class item{
         itemBox.parentNode.removeChild(itemBox);
         let index = todos.indexOf(name);
         todos.splice(index, 1);
-        statusLocal.splice(index, 1);
+        statusClass.splice(index, 1);
         window.localStorage.setItem("todos", JSON.stringify(todos));
-        window.localStorage.setItem("statusLocal", JSON.stringify(statusLocal));
+        window.localStorage.setItem("statusClass", JSON.stringify(statusClass));
     }
 }
 
@@ -112,13 +112,17 @@ add.addEventListener('click', check);
 function check(e){
      e.preventDefault();
 	if(inputValue.value != ""){
-       
+        let index = todos.indexOf(inputValue.value);
+        if(todos[index] === inputValue.value){
+            alert('You already have it on your list.');
+            inputValue.value = "";
+        }else{
 	    new item(inputValue.value);
         todos.push(inputValue.value);
         window.localStorage.setItem("todos", JSON.stringify(todos));
-        statusLocal.push('uncompleted');
-        window.localStorage.setItem("statusLocal", JSON.stringify(statusLocal));
-		inputValue.value = "";
+        statusClass.push('uncompleted');
+        window.localStorage.setItem("statusClass", JSON.stringify(statusClass));
+		inputValue.value = "";}
 	}
 }
 

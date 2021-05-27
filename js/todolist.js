@@ -32,28 +32,29 @@ class item{
     	input.classList.add('item_input');
 
         const complete = document.createElement('button');
-            complete.classList.add('complete');
-            complete.innerHTML = "Done";
-            complete.addEventListener('click', () => {
+            complete.classList.add('complete-btn');
+            complete.innerHTML = '<i class="far fa-check-circle"></i>';
+            complete.addEventListener('click', (e) => {
+            e.preventDefault();
             this.complete(name, input);
         });
 
     	const edit = document.createElement('button');
-    	edit.classList.add('edit');
-    	edit.innerHTML = "EDIT";
-    	edit.addEventListener('click', () => {
-          this.edit(input, name);
-          input.focus();
-          window.addEventListener('keyup', (e) => {
-          if(e.keyCode == 13){
-          edit.click();
-          }
-          });
+    	edit.classList.add('edit-btn');
+    	edit.innerHTML = '<i class="far fa-edit"></i>';
+    	edit.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.edit(input, name);
+        input.focus();
+        window.addEventListener('keyup', (e) => {
+        if(e.keyCode == 13){
+            edit.click();
+        }});
         });
 
     	const remove = document.createElement('button');
-    	remove.classList.add('remove');
-    	remove.innerHTML = "REMOVE";
+    	remove.classList.add('remove-btn');
+    	remove.innerHTML = '<i class="far fa-trash-alt"></i>';
     	remove.addEventListener('click', () => this.remove(itemBox, name));
 
         let index = todos.indexOf(name);
